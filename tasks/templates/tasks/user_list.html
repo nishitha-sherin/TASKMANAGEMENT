@@ -1,0 +1,48 @@
+
+{% extends 'tasks/base.html' %}
+
+{% block title %}Users - Task Management{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>Users</h2>
+    <a href="{% url 'user_create' %}" class="btn btn-primary">+ Create User</a>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Name</th>
+                <th>Assigned Admin</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email }}</td>
+                <td>{{ user.first_name }} {{ user.last_name }}</td>
+                <td>{{ user.assigned_admin.username|default:"Not Assigned" }}</td>
+                <td>
+                    <a href="{% url 'user_delete' user.id %}" 
+                       class="btn btn-danger" 
+                       onclick="return confirm('Are you sure you want to delete this user?')">
+                        Delete
+                    </a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: #999;">No users found</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

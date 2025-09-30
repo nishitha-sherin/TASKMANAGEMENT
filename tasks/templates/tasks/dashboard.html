@@ -1,0 +1,67 @@
+
+{% extends 'tasks/base.html' %}
+
+{% block title %}Dashboard - Task Management{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 2rem;">Dashboard</h2>
+
+<div class="stats-grid">
+    {% if user.role == 'superadmin' %}
+    <div class="stat-card">
+        <h3>Total Admins</h3>
+        <div class="number">{{ total_admins }}</div>
+    </div>
+
+    <div class="stat-card">
+        <h3>Total Users</h3>
+        <div class="number">{{ total_users }}</div>
+    </div>
+
+    {% endif %}
+    
+    <div class="stat-card">
+        <h3>Total Tasks</h3>
+        <div class="number">{{ total_tasks }}</div>
+    </div>
+    
+    <div class="stat-card">
+        <h3>Completed Tasks</h3>
+        <div class="number">{{ completed_tasks }}</div>
+    </div>
+</div>
+
+<div class="card">
+    <h3>Welcome, {{ user.first_name|default:user.username }}!</h3>
+    <p style="margin-top: 1rem; color: #666;">
+        You are logged in as <strong>{{ user.get_role_display }}</strong>.
+    </p>
+    <p style="margin-top: 0.5rem; color: #666;">
+        Use the navigation menu above to manage 
+        {% if user.role == 'superadmin' %}admins, users, tasks, and view reports{% else %}tasks and view reports{% endif %}.
+    </p>
+    
+    {% if user.role == 'superadmin' %}
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{% url 'user_list' %}" class="btn btn-primary">👥 Manage Users</a>
+        <a href="{% url 'admin_list' %}" class="btn btn-primary">🛡️ Manage Admins</a>
+        <a href="{% url 'task_list_view' %}" class="btn btn-success">📋 View All Tasks</a>
+        <a href="{% url 'task_report_view' %}" class="btn btn-success">📊 View Reports</a>
+    </div>
+    {% endif %}
+
+    {% if user.role == 'admin' %}
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{% url 'task_list_view' %}" class="btn btn-success">📋 View All Tasks</a>
+        <a href="{% url 'task_report_view' %}" class="btn btn-success">📊 View Reports</a>
+    </div>
+    {% endif %}
+
+    {% if user.role == 'user' %}
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{% url 'user_task_list_view' %}" class="btn btn-success">📋 View Tasks</a>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}

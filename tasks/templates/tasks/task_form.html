@@ -1,0 +1,44 @@
+<!-- templates/admin/task_form.html -->
+{% extends 'admin/base.html' %}
+
+{% block title %}Create Task - Task Management{% endblock %}
+
+{% block content %}
+<h2 style="margin-bottom: 2rem;">Create New Task</h2>
+
+<div class="card">
+    <form method="post">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="title">Task Title *</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+        
+        <div class="form-group">
+            <label for="description">Description *</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+        
+        <div class="form-group">
+            <label for="assigned_to">Assign To *</label>
+            <select id="assigned_to" name="assigned_to" required>
+                <option value="">-- Select User --</option>
+                {% for user in users %}
+                <option value="{{ user.id }}">{{ user.username }} - {{ user.first_name }} {{ user.last_name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="due_date">Due Date *</label>
+            <input type="date" id="due_date" name="due_date" required>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            <button type="submit" class="btn btn-primary">Create Task</button>
+            <a href="{% url 'task_list_view' %}" class="btn" style="background: #95a5a6; color: white;">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

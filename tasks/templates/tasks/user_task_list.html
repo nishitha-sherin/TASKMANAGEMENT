@@ -1,0 +1,50 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}My Tasks - Task Management{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+    <h2>My Tasks</h2>
+</div>
+
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Title</th>
+                <th>Due Date</th>
+                <th>Status</th>
+                <th>Worked Hours</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for task in tasks %}
+            <tr>
+                <td>{{ task.id }}</td>
+                <td>{{ task.title }}</td>
+                <td>{{ task.due_date }}</td>
+                <td>
+                    {% if task.status == 'pending' %}
+                        <span class="badge badge-pending">Pending</span>
+                    {% elif task.status == 'in_progress' %}
+                        <span class="badge badge-progress">In Progress</span>
+                    {% else %}
+                        <span class="badge badge-completed">Completed</span>
+                    {% endif %}
+                </td>
+                <td>{{ task.worked_hours|default:"N/A" }}</td>
+                <td>
+                    <a href="{% url 'task_update_view' task.id %}" class="btn btn-warning">Update</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" style="text-align: center; color: #999;">No tasks assigned to you</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends 'tasks/base.html' %}
+
+{% block title %}Update Task{% endblock %}
+
+{% block content %}
+<h2>Update Task: {{ task.title }}</h2>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="worked_hours">Worked Hours</label>
+        <input type="number" name="worked_hours" id="worked_hours" step="0.1" value="{{ task.worked_hours }}">
+    </div>
+
+    <div class="form-group">
+        <label for="completion_report">Completion Report</label>
+        <input type="text" name="completion_report" id="completion_report"  value="{{ task.completion_report }}">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{% url 'user_task_list_view' %}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
